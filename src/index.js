@@ -1,4 +1,3 @@
-const _ = require("lodash");
 const path = require("path");
 const {
   app,
@@ -11,6 +10,7 @@ const {
 } = require("electron");
 
 const createEditorWin = require("./createEditorWin.js");
+let editorWin = null;
 
 app.on("ready", () => {
   const win = new BrowserWindow({ show: false });
@@ -20,7 +20,7 @@ app.on("ready", () => {
   const contextMenu = Menu.buildFromTemplate([
     {
       label: "Take a screenshot",
-      click: () => editorWin.maximize(),
+      click: () => makeScreenshot(),
     },
     {
       label: "Options...",
@@ -35,18 +35,23 @@ app.on("ready", () => {
       click: () => app.quit(),
     },
   ]);
-  const editorWin = createEditorWin();
+  editorWin = createEditorWin();
 
   tray.setContextMenu(contextMenu);
   tray.setTitle("Take a screenshot");
   tray.setToolTip("Take a screenshot");
-  tray.on("click", () => editorWin.maximize());
+  tray.on("click", () => makeScreenshot());
 
-  globalShortcut.register("PrintScreen", () => editorWin.maximize());
+  globalShortcut.register("PrintScreen", () => makeScreenshot());
   globalShortcut.register("Esc", () => editorWin.minimize());
 
   win.tray = tray;
 });
+
+async function makeScreenshot() {
+  await editorWin.rerender();
+  editorWin.maximize();
+}
 
 function notCreatedDialog() {
   dialog.showMessageBox(null, {
