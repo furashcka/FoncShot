@@ -39,6 +39,7 @@ module.exports = function createEditorWin() {
     rerender: async () => {
       let screenshots = await getScreenshots();
 
+      // win.webContents.openDevTools();
       win.webContents.send("rerender", {
         screenshots,
       });
