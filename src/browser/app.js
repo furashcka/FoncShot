@@ -9,7 +9,7 @@ ipcRenderer.on("rerender", (e, { screenshots }) => {
 
     img.onload = () => {
       let offset = _.get(screenshots, `[${i - 1}].width`, 0);
-      ctx.drawImage(img, offset + 15, 0);
+      ctx.drawImage(img, offset, 0);
     };
     img.src = base64;
   });
