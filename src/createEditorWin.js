@@ -1,6 +1,6 @@
 const path = require("path");
 const _ = require("lodash");
-const { BrowserWindow } = require("electron");
+const { BrowserWindow, clipboard, nativeImage, ipcMain } = require("electron");
 const getScreenshots = require("./getScreenshots.js");
 
 module.exports = function createEditorWin() {
@@ -35,7 +35,14 @@ module.exports = function createEditorWin() {
   win.show();
   win.hide();
 
+  ipcMain.on("fetchSnapshotResult", (e, base64) => {
+    let img = nativeImage.createFromDataURL(base64);
+
+    clipboard.writeImage(img);
+  });
+
   return {
+    win,
     rerender: async () => {
       let screenshots = await getScreenshots();
 
@@ -43,6 +50,10 @@ module.exports = function createEditorWin() {
       win.webContents.send("rerender", {
         screenshots,
       });
+    },
+
+    copyToClipboard: () => {
+      win.webContents.send("fetchSnapshot");
     },
 
     minimize: () => {

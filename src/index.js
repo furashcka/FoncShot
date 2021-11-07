@@ -45,6 +45,17 @@ app.on("ready", () => {
   globalShortcut.register("PrintScreen", () => makeScreenshot());
   globalShortcut.register("Esc", () => editorWin.minimize());
 
+  editorWin.win.on("focus", () => {
+    globalShortcut.register("Ctrl+C", () => {
+      editorWin.copyToClipboard();
+      editorWin.minimize();
+    });
+  });
+
+  editorWin.win.on("blur", () => {
+    globalShortcut.unregister("Ctrl+C");
+  });
+
   win.tray = tray;
 });
 
