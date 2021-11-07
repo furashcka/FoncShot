@@ -32,7 +32,7 @@ app.on("ready", () => {
     },
     {
       label: "Exit",
-      click: () => win.close(),
+      click: () => app.quit(),
     },
   ]);
   const editorWin = createEditorWin();
