@@ -1,24 +1,16 @@
 const _ = require("lodash");
-const { desktopCapturer } = require("electron");
+const screenshot = require("screenshot-desktop");
 
 module.exports = async function getScreenshots() {
-  let maxSizeScreen = getBiggerScreen();
-  let { width, height } = maxSizeScreen.size;
-  let sources = await desktopCapturer.getSources({
-    types: ["screen"],
-    thumbnailSize: { width, height },
+  let displays = await screenshot.listDisplays();
+  let promises = _.map(displays, ({ id }) => {
+    return screenshot({ screen: id, format: "jpeg" });
   });
+  let screenshots = await Promise.all(promises);
 
-  return _.map(sources, ({ thumbnail }) => ({
-    size: thumbnail.getSize(),
-    data: thumbnail.toDataURL(),
+  return _.map(displays, ({ width, height }, i) => ({
+    width,
+    height,
+    data: screenshots[i],
   }));
 };
-
-function getBiggerScreen() {
-  const { screen } = require("electron");
-
-  return _.maxBy(screen.getAllDisplays(), ({ size }) => {
-    return size.width + size.height;
-  });
-}
