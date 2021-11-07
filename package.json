@@ -2,7 +2,7 @@
   "name": "foncshot",
   "version": "0.0.1",
   "description": "Free screen capture for edits and publish to: Google Drive",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "electron ."
   },
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/furashcka/FoncShot/issues"
   },
-  "homepage": "https://github.com/furashcka/FoncShot#readme"
+  "homepage": "https://github.com/furashcka/FoncShot#readme",
+  "devDependencies": {
+    "electron": "^15.3.0"
+  }
 }
