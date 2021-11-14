@@ -43,6 +43,7 @@ module.exports = function createEditorWin() {
 
   return {
     win,
+
     rerender: async () => {
       let screenshots = await getScreenshots();
 
@@ -50,6 +51,10 @@ module.exports = function createEditorWin() {
       win.webContents.send("rerender", {
         screenshots,
       });
+    },
+
+    clear() {
+      win.webContents.send("clear");
     },
 
     copyToClipboard: () => {

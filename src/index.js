@@ -43,7 +43,10 @@ app.on("ready", () => {
   tray.on("click", () => makeScreenshot());
 
   globalShortcut.register("PrintScreen", () => makeScreenshot());
-  globalShortcut.register("Esc", () => editorWin.minimize());
+  globalShortcut.register("Esc", () => {
+    editorWin.clear();
+    editorWin.minimize();
+  });
 
   editorWin.win.on("focus", () => {
     globalShortcut.register("Ctrl+C", () => {
